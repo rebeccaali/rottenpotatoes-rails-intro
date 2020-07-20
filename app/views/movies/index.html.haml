@@ -4,9 +4,17 @@
 %table#movies.table.table-striped.col-md-12
   %thead
     %tr
-      %th Movie Title
+      -#%th Movie Title
+      -#%td= link_to "Movie Title", movies_path
+      -#%th Rating
+      -#%th Release Date
+      -#%th More Info
+      
+      %th{params[:order] == "title" ? {:class => "hilite"} : {}}
+        %a#title_header{:href => movies_path({:order => 'title'})} Movie Title
       %th Rating
-      %th Release Date
+      %th{params[:order] == "release_date" ? {:class => "hilite"} : {}}
+        %a#release_date_header{:href => movies_path({:order => 'release_date'})} Release Date
       %th More Info
   %tbody
     - @movies.each do |movie|
