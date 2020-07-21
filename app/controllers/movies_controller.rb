@@ -11,8 +11,35 @@ class MoviesController < ApplicationController
   end
 
   def index
-    session[:order] = params[:order]
-    @movies = Movie.all.order(session[:order])
+    @all_ratings = Movie.get_ratings
+    #session[:order] = params[:order]
+    #session[:ratings] = params[:ratings]
+   #@movies = Movie.all.order(session[:order])
+    @order = params[:order]
+      
+    params[:ratings].nil? ? @ratings = @all_ratings : @ratings = params[:ratings].keys
+    @movies = Movie.where(rating: @ratings).order(@order)
+      
+=begin     
+    ratings = params[:ratings] 
+    if ratings.nil?
+      ratings = Movie.get_ratings 
+      
+    else
+      ratings = ratings
+      @movies = Movie.where(rating: ratings)
+      #redirect_to movies_path(:order => session[:order], :ratings => ratings)
+
+    end
+=end
+
+   
+    
+    #if !params[:ratings].nil?
+    #    selected_ratings = params[:ratings].keys
+    #    @movies = Movie.where(rating: selected_ratings)#.order(session[:order])
+    #end
+
   end
 
   def new
@@ -42,5 +69,6 @@ class MoviesController < ApplicationController
     flash[:notice] = "Movie '#{@movie.title}' deleted."
     redirect_to movies_path
   end
-
+  
+ 
 end
